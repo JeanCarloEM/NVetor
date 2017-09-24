@@ -38,7 +38,7 @@
 #ifndef COMUM_H
 #define COMUM_H
 
-#include "rng.h"
+#include "RNG/rng.h"
 #include <stdio.h>
 #include <string.h>
 #include <iostream>

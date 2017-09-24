@@ -38,7 +38,7 @@
 #ifndef COMUM_C
 #define COMUM_C
 
-#include "rng.h"
+#include "RNG/rng.h"
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
@@ -89,6 +89,13 @@ namespace NVetor {
     }
   }
 
+  /*
+   * TROCA O CONTEUDO (PONTEITO) PARA APONTAR PARA OUTRO
+   * FAZ A TROCA DE PONTEIRO ENTRE PONTEIROS
+   * 
+   * @param {void**}  o     origem
+   * @param {void**}  d     destino
+   */
   void swapP(void **o, void **d) {
     if ((o != NULL) && (d != NULL) && ((*o != NULL) || (*d != NULL))){
       void **tmp = (void **) malloc(sizeof(void *));
@@ -102,7 +109,9 @@ namespace NVetor {
     }
   }
 
-
+  /*
+   * IMPLEMENTACAO DE EXCECAO PARA AVISO DE ERROS EM TELA
+   */
   const char* VetException::what() const throw () {
     unsigned int size = slen(s) + slen(f) + /*slen(l) +*/ slen(a) + 10;
     char *text = (char *) malloc(size * sizeof(char));
@@ -120,6 +129,9 @@ namespace NVetor {
     return text;
   }
 
+  /*
+   * IMPLEMENTACAO DE EXCECAO PARA AVISO DE ERROS EM TELA
+   */  
   unsigned int VetException::slen(const char *c) const{
     unsigned int r = 0;
 
