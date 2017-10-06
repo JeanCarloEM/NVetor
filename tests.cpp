@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) [year] [fullname]
+ * Copyright (c) 2017 Jean Carlo de Elias Moreira
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,63 +33,30 @@
  * @site       https://opensource.jeancarloem.com/NVetor
  * @dependency RNG | https://github.com/ademakov/RNG
  *
+ * =============================================================================
+ *
+ * g++ compile command: g++ -std=c++11 -O3 tests.cpp -o tests
+ *
  */
 
-#ifndef COMUM_H
-#define COMUM_H
+#include "tests/performance.h"
+#include "tests/funciona1D.h"
+#include "tests/funciona3D.h"
 
-#include "RNG/rng.h"
-#include <stdio.h>
-#include <string.h>
-#include <iostream>
+/*
+ *
+ */
+int main(int argc, char** argv) {
+	// FAZ TESTES DE FUNCIONAMENTO DO VETOR
+  tests::tVetor1D();
 
-#if (!defined(__WINDOWS__)) && (defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__TOS_WIN__))
-#define __WINDOWS__
-#elif defined(__GNUC__) || defined(linux)
-#define __LINUX__
-#endif
+	// FAZ TESTE DE FUNCIONAMENTO DO VETOR 3D
+  //tests::teste3D();
 
-#if defined(__WINDOWS__)
-  #define DLLEXPORT __declspec(dllexport) __stdcall
-  #define DLLIMPORT __declspec(dllimport) __stdcall
-  #elif defined(__LINUX__)
-  #define DLLEXPORT __attribute__((visibility("default")))
-  #define DLLIMPORT
-#else
-  #define DLLEXPORT
-  #define DLLIMPORT
-#endif
+	// COMPARE VETOR, ARRAY E STD::VECTOR
+  tests::compare((argc > 1) ? argv[1] : "saida.csv", (argc > 2) ? true : false, (argc > 3) ? true : false, (argc > 4) ? true : false);
 
-typedef unsigned long long int ulint;
-typedef long long int lint;
+	getchar();
 
-namespace NVetor {
-  int aleatorio();
-  int sortear(int min, int max);
-  void swapP(void **o, void **d);
-
-  /*
-   * CLASSE DE EXCECAO USADA PARA PRINTAR ERROS FORMATADOS
-   * NO TERMINAL
-   */
-  struct VetException : public std::exception {
-    const char *s, *f, *a;
-    int l;
-
-    VetException(const char *ff, int ll, const char *fi, const char *ss)
-      : s(ss), f(ff), l(ll), a(fi)
-    {}
-
-    ~VetException() throw () {
-    }
-
-    unsigned int slen(const char *c) const;
-    const char* what() const throw ();
-  };
+  return 0;
 }
-
-#if (defined(DLLVETOR) && defined(MAKEDLLVETOR)) || !defined(DLLVETOR)
-#include "comum.c"
-#endif
-
-#endif /* COMUM_H */

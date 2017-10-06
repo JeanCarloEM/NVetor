@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) [year] [fullname]
+ * Copyright (c) 2017 Jean Carlo de Elias Moreira
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,24 +35,33 @@
  *
  */
 
+#pragma once
+
 #ifndef VETOR3D_H
 #define VETOR3D_H
 
-/* https://sourceforge.net/p/predef/wiki/OperatingSystems/ */
+#include "Vetor.h"
+
+ /* https://sourceforge.net/p/predef/wiki/OperatingSystems/ */
 #ifdef DLLVETOR
-  #ifdef MAKEDLLVETOR
-    #define DLLVETORIMEXPORT DLLEXPORT
-  #else
-    #define DLLVETORIMEXPORT DLLIMPORT
-  #endif
+	#if defined(__WINDOWS__) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__TOS_WIN__)
+		#define DLLEXPORT __declspec(dllexport) __stdcall
+		#define DLLIMPORT __declspec(dllimport) __stdcall
+	#elif defined(__LINUX__)
+		#define DLLEXPORT __attribute__((visibility("default")))
+		#define DLLIMPORT
+	#endif
+
+	#ifdef MAKEDLLVETOR
+		#define DLLVETORIMEXPORT DLLEXPORT
+	#else
+		#define DLLVETORIMEXPORT DLLIMPORT
+	#endif
 #else
-  #define DLLVETORIMEXPORT
+	#define DLLVETORIMEXPORT
 #endif
 
-  #include "Vetor.h"
-
-  namespace NVetor {
-    class TVetor3D;
+  namespace NVetor {    
 
     class TVetor3D{
     #ifndef MAKEDLLVETOR
@@ -69,7 +78,7 @@
        * @param {uliunt} i    o numero do indice no vetor do item a ser liberado
        * @return {bool}       true se sucesso
        */
-      bool freeItem(ulint i);
+      bool freeItem(lint i);
 
       /*
        * INICIALIZA UM ITEM ESPECIFICO
@@ -77,7 +86,7 @@
        * @param {uliunt} i    o numero do indice no vetor do item a ser liberado
        * @return {bool}       true se sucesso
        */
-      bool initItem(ulint i);
+      bool initItem(lint i);
 
       /*
        * LIBERA/DESTROI/DESALOCA TODOS OS ITENS DO VETOR
@@ -94,7 +103,7 @@
        *
        * @return {bool}       true se sucesso
        */
-      bool re_alocar(ulint size);
+      bool re_alocar(lint size);
     #endif
     public:
       /*
@@ -102,28 +111,28 @@
        *
        * @param {TCallBackFreeInitVetorItem}  f   Funcao Callback para Liberar Items
        * @param {TCallBackFreeInitVetorItem}  i   Funcao Callback para Iniciar Items
-       * @param {ulint}                       z   numero de items no eixo z
-       * @param {ulint}                       x   numero de items no eixo x
-       * @param {ulint}                       y   numero de items no eixo y
+       * @param {lint}                       z   numero de items no eixo z
+       * @param {lint}                       x   numero de items no eixo x
+       * @param {lint}                       y   numero de items no eixo y
        */
-      DLLVETORIMEXPORT TVetor3D(TCallBackFreeInitVetorItem f, TCallBackFreeInitVetorItem i, ulint z, ulint x, ulint y);
+      DLLVETORIMEXPORT TVetor3D(TCallBackFreeInitVetorItem f, TCallBackFreeInitVetorItem i, lint z, lint x, lint y);
       /*
        * CONSTRUTOR
        *
        * @param {TCallBackFreeInitVetorItem}  f   Funcao Callback para Liberar Items
-       * @param {ulint}                       z   numero de items no eixo z
-       * @param {ulint}                       x   numero de items no eixo x
-       * @param {ulint}                       y   numero de items no eixo y
+       * @param {lint}                       z   numero de items no eixo z
+       * @param {lint}                       x   numero de items no eixo x
+       * @param {lint}                       y   numero de items no eixo y
        */
-      DLLVETORIMEXPORT TVetor3D(TCallBackFreeInitVetorItem i, ulint z, ulint x, ulint y);
+      DLLVETORIMEXPORT TVetor3D(TCallBackFreeInitVetorItem i, lint z, lint x, lint y);
       /*
        * CONSTRUTOR
        *
-       * @param {ulint}                       z   numero de items no eixo z
-       * @param {ulint}                       x   numero de items no eixo x
-       * @param {ulint}                       y   numero de items no eixo y
+       * @param {lint}                       z   numero de items no eixo z
+       * @param {lint}                       x   numero de items no eixo x
+       * @param {lint}                       y   numero de items no eixo y
        */
-      DLLVETORIMEXPORT TVetor3D(ulint z, ulint x, ulint y);
+      DLLVETORIMEXPORT TVetor3D(lint z, lint x, lint y);
       /*
        * CONSTRUTOR DE ITENS VAZIOS
        *
@@ -145,7 +154,7 @@
        *
        * @return {ulin}
        */
-      DLLVETORIMEXPORT ulint cellCount();
+      DLLVETORIMEXPORT lint cellCount();
       /*
        * RETORNA DE O VETOR ESTA ALOCADO NA MEMORIA
        *
@@ -161,51 +170,51 @@
       /*
        * SETA O TAMANHO DO VETOR 3D
        *
-       * @param {ulint}                       z   numero de items no eixo z
-       * @param {ulint}                       x   numero de items no eixo x
-       * @param {ulint}                       y   numero de items no eixo y
+       * @param {lint}                       z   numero de items no eixo z
+       * @param {lint}                       x   numero de items no eixo x
+       * @param {lint}                       y   numero de items no eixo y
        * @return {ulin}                           a quantidade de celulas total
        */
-      DLLVETORIMEXPORT ulint setSize(ulint z, ulint x, ulint y);
+      DLLVETORIMEXPORT lint setSize(lint z, lint x, lint y);
       /*
        * OBTEM UM PONTEIRO UMA CELULA
        *
-       * @param {ulint}                       z     coordenada z
-       * @param {ulint}                       x     coordenada x
-       * @param {ulint}                       y     coordenada y
+       * @param {lint}                       z     coordenada z
+       * @param {lint}                       x     coordenada x
+       * @param {lint}                       y     coordenada y
        * @param {void**}                      item  um ponteiro para retornar
        * @return {ulin}                             true se setou o ponteiro corretamente
        */
-      DLLVETORIMEXPORT bool item(ulint z, ulint x, ulint y, void **item);
+      DLLVETORIMEXPORT bool item(lint z, lint x, lint y, void **item);
       /*
        * RETORNA UM PONTEIRO PARA UMA CELULA
        *
-       * @param {ulint}                       z   coordenada z
-       * @param {ulint}                       x   coordenada x
-       * @param {ulint}                       y   coordenada y
+       * @param {lint}                       z   coordenada z
+       * @param {lint}                       x   coordenada x
+       * @param {lint}                       y   coordenada y
        * @return {void*}
        */
-      DLLVETORIMEXPORT void *item(ulint z, ulint x, ulint y);
+      DLLVETORIMEXPORT void *item(lint z, lint x, lint y);
       /*
        * RETORNA UM PONTEIRO PARA O INDICE DE UM ITEM
        *
-       * @param {ulint}                       z   coordenada z
-       * @param {ulint}                       x   coordenada x
-       * @param {ulint}                       y   coordenada y
+       * @param {lint}                       z   coordenada z
+       * @param {lint}                       x   coordenada x
+       * @param {lint}                       y   coordenada y
        * @return {void**}
        */
-      DLLVETORIMEXPORT void **itemP(ulint z, ulint x, ulint y);
+      DLLVETORIMEXPORT void **itemP(lint z, lint x, lint y);
       /*
        * CONFIGURA UMA CELULA PARA QUE APONTE PARA UM NOVO PONTEIRO
        * OU SEJA, DEFINE O NOVO VALOR DA CELULA
        * ESTA FUNCAO TENTA LIBERAR EVENTUAL CONTEUDO PREEXISTENTE NA CELULA
        *
-       * @param {ulint}                       z   coordenada z
-       * @param {ulint}                       x   coordenada x
-       * @param {ulint}                       y   coordenada y
+       * @param {lint}                       z   coordenada z
+       * @param {lint}                       x   coordenada x
+       * @param {lint}                       y   coordenada y
        * @return {bool}                           true se sucesso
        */
-      DLLVETORIMEXPORT bool setItem(ulint z, ulint x, ulint y, void *p);
+      DLLVETORIMEXPORT bool setItem(lint z, lint x, lint y, void *p);
       /*
        * RETORNA A QUANTIDADE DE ITEMS NO EIXO Z
        *
@@ -215,9 +224,9 @@
        * 50 FORAM INICIALIZADOS(ALOCADOS/CRIADOS)
        * PORTANTO COUNT CONTA OS ELEMENTOS EXISTENTE, NAO O TAMANHO DO VETOR
        *
-       * @return {ulint}
+       * @return {lint}
        */
-      DLLVETORIMEXPORT ulint Zcount();
+      DLLVETORIMEXPORT lint Zcount();
       /*
        * RETORNA A QUANTIDADE DE ITEMS NO EIXO X
        *
@@ -227,10 +236,10 @@
        * 50 FORAM INICIALIZADOS(ALOCADOS/CRIADOS)
        * PORTANTO COUNT CONTA OS ELEMENTOS EXISTENTE, NAO O TAMANHO DO VETOR
        *
-       * @param {ulint}                       z   coordenada z
-       * @return {ulint}
+       * @param {lint}                       z   coordenada z
+       * @return {lint}
        */
-      DLLVETORIMEXPORT ulint Xcount(ulint z);
+      DLLVETORIMEXPORT lint Xcount(lint z);
       /*
        * RETORNA A QUANTIDADE DE ITEMS NO EIXO Y
        *
@@ -240,11 +249,11 @@
        * 50 FORAM INICIALIZADOS(ALOCADOS/CRIADOS)
        * PORTANTO COUNT CONTA OS ELEMENTOS EXISTENTE, NAO O TAMANHO DO VETOR
        *
-       * @param {ulint}                       z   coordenada z
-       * @param {ulint}                       x   coordenada x
-       * @return {ulint}
+       * @param {lint}                       z   coordenada z
+       * @param {lint}                       x   coordenada x
+       * @return {lint}
        */
-      DLLVETORIMEXPORT ulint Ycount(ulint z, ulint x);
+      DLLVETORIMEXPORT lint Ycount(lint z, lint x);
       /*
        * RETORNA O TAMANHO DE ALOCACAO NA MEMORIA, MESMO QUE NAO USADO
        * POR ITEMS - NAO PRENCHIDO, NO EIXO Z
@@ -253,9 +262,9 @@
        * O TAMANHO DA MATRIZ **items.
        * NAO NECESSARIAMENTE EXISTEM A MESMA QUANTIDADE DE ELEMENTOS
        *
-       * @return {ulint}
+       * @return {lint}
        */
-      DLLVETORIMEXPORT ulint Zsize(ulint size = 0);
+      DLLVETORIMEXPORT lint Zsize(lint size = 0);
       /*
        * RETORNA O TAMANHO DE ALOCACAO NA MEMORIA, MESMO QUE NAO USADO
        * POR ITEMS - NAO PRENCHIDO, NO EIXO X
@@ -264,10 +273,10 @@
        * O TAMANHO DA MATRIZ **items.
        * NAO NECESSARIAMENTE EXISTEM A MESMA QUANTIDADE DE ELEMENTOS
        *
-       * @param {ulint}                       z   coordenada z
-       * @return {ulint}
+       * @param {lint}                       z   coordenada z
+       * @return {lint}
        */
-      DLLVETORIMEXPORT ulint Xsize(ulint size = 0);
+      DLLVETORIMEXPORT lint Xsize(lint size = 0);
       /*
        * RETORNA O TAMANHO DE ALOCACAO NA MEMORIA, MESMO QUE NAO USADO
        * POR ITEMS - NAO PRENCHIDO, NO EIXO Y
@@ -276,11 +285,11 @@
        * O TAMANHO DA MATRIZ **items.
        * NAO NECESSARIAMENTE EXISTEM A MESMA QUANTIDADE DE ELEMENTOS
        *
-       * @param {ulint}                       z   coordenada z
-       * @param {ulint}                       x   coordenada x
-       * @return {ulint}
+       * @param {lint}                       z   coordenada z
+       * @param {lint}                       x   coordenada x
+       * @return {lint}
        */
-      DLLVETORIMEXPORT ulint Ysize(ulint size = 0);
+      DLLVETORIMEXPORT lint Ysize(lint size = 0);
       /*
        * EVOCADORES DAS FUNCOES DE CALLBACK FORNECIDAS NO CONSTRUTOR
        */
@@ -308,13 +317,9 @@
    * ESPECIALIZACOES - CHAR
    *================================================*/
 
-    DLLVETORIMEXPORT bool iteam3DAsChar(TVetor3D *p, ulint z, ulint x, ulint y, char **c);
-    DLLVETORIMEXPORT char *iteam3DAsChar(TVetor3D *p, ulint z, ulint x, ulint y);
+    DLLVETORIMEXPORT bool iteam3DAsChar(TVetor3D *p, lint z, lint x, lint y, char **c);
+    DLLVETORIMEXPORT char *iteam3DAsChar(TVetor3D *p, lint z, lint x, lint y);
   };
 
-#if (defined(DLLVETOR) && defined(MAKEDLLVETOR)) || !defined(DLLVETOR)
-#include "Vetor3D.cpp"
-#endif
 
 #endif /* VETOR3D_H */
-

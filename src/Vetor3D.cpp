@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) [year] [fullname]
+ * Copyright (c) 2017 Jean Carlo de Elias Moreira
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,11 +35,7 @@
  *
  */
 
-#ifndef VETOR3D_CPP
-#define VETOR3D_CPP
-
-#include "Vetor.h"
-#include "../lib/comum.h"
+#include "Vetor3D.h"
 
 namespace NVetor {
   /*
@@ -68,7 +64,7 @@ namespace NVetor {
    *
    * @return {ulin}
    */
-  ulint TVetor3D::cellCount(){
+  lint TVetor3D::cellCount(){
     if (this->alocado()){
       return (this->vetor->size() * itemAsVetor(this->vetor, 0)->size() * itemAsVetor(itemAsVetor(this->vetor, 0), 0)->size());
     }
@@ -96,11 +92,11 @@ namespace NVetor {
    *
    * @param {TCallBackFreeInitVetorItem}  f   Funcao Callback para Liberar Items
    * @param {TCallBackFreeInitVetorItem}  i   Funcao Callback para Iniciar Items
-   * @param {ulint}                       z   numero de items no eixo z
-   * @param {ulint}                       x   numero de items no eixo x
-   * @param {ulint}                       y   numero de items no eixo y
+   * @param {lint}                       z   numero de items no eixo z
+   * @param {lint}                       x   numero de items no eixo x
+   * @param {lint}                       y   numero de items no eixo y
    */
-  TVetor3D::TVetor3D(TCallBackFreeInitVetorItem f, TCallBackFreeInitVetorItem i, ulint z, ulint x, ulint y){
+  TVetor3D::TVetor3D(TCallBackFreeInitVetorItem f, TCallBackFreeInitVetorItem i, lint z, lint x, lint y){
     // DESALOCA A VETOR SE ESTIVER ALOCADA
     this->reset();
 
@@ -115,11 +111,11 @@ namespace NVetor {
    * CONSTRUTOR
    *
    * @param {TCallBackFreeInitVetorItem}  f   Funcao Callback para Liberar Items
-   * @param {ulint}                       z   numero de items no eixo z
-   * @param {ulint}                       x   numero de items no eixo x
-   * @param {ulint}                       y   numero de items no eixo y
+   * @param {lint}                       z   numero de items no eixo z
+   * @param {lint}                       x   numero de items no eixo x
+   * @param {lint}                       y   numero de items no eixo y
    */
-  TVetor3D::TVetor3D(TCallBackFreeInitVetorItem i, ulint z, ulint x, ulint y){
+  TVetor3D::TVetor3D(TCallBackFreeInitVetorItem i, lint z, lint x, lint y){
     this->reset();
     this->_initItem = i;
     this->setSize(z, x, y);
@@ -127,11 +123,11 @@ namespace NVetor {
   /*
    * CONSTRUTOR
    *
-   * @param {ulint}                       z   numero de items no eixo z
-   * @param {ulint}                       x   numero de items no eixo x
-   * @param {ulint}                       y   numero de items no eixo y
+   * @param {lint}                       z   numero de items no eixo z
+   * @param {lint}                       x   numero de items no eixo x
+   * @param {lint}                       y   numero de items no eixo y
    */
-  TVetor3D::TVetor3D(ulint z, ulint x, ulint y){
+  TVetor3D::TVetor3D(lint z, lint x, lint y){
     this->reset();
     this->setSize(z, x, y);
   }
@@ -180,9 +176,9 @@ namespace NVetor {
    * 50 FORAM INICIALIZADOS(ALOCADOS/CRIADOS)
    * PORTANTO COUNT CONTA OS ELEMENTOS EXISTENTE, NAO O TAMANHO DO VETOR
    *
-   * @return {ulint}
+   * @return {lint}
    */
-  ulint TVetor3D::Zcount(){
+  lint TVetor3D::Zcount(){
     if (this->alocado()){
       if (this->vetor != NULL){
         return this->vetor->count();
@@ -201,10 +197,10 @@ namespace NVetor {
    * 50 FORAM INICIALIZADOS(ALOCADOS/CRIADOS)
    * PORTANTO COUNT CONTA OS ELEMENTOS EXISTENTE, NAO O TAMANHO DO VETOR
    *
-   * @param {ulint}                       z   coordenada z
-   * @return {ulint}
+   * @param {lint}                       z   coordenada z
+   * @return {lint}
    */
-  ulint TVetor3D::Xcount(ulint z = 0){
+  lint TVetor3D::Xcount(lint z = 0){
     if (this->alocado()){
       if (this->Zcount() > z){
         return itemAsVetor(this->vetor, z)->count();
@@ -223,11 +219,11 @@ namespace NVetor {
    * 50 FORAM INICIALIZADOS(ALOCADOS/CRIADOS)
    * PORTANTO COUNT CONTA OS ELEMENTOS EXISTENTE, NAO O TAMANHO DO VETOR
    *
-   * @param {ulint}                       z   coordenada z
-   * @param {ulint}                       x   coordenada x
-   * @return {ulint}
+   * @param {lint}                       z   coordenada z
+   * @param {lint}                       x   coordenada x
+   * @return {lint}
    */
-  ulint TVetor3D::Ycount(ulint z = 0, ulint x = 0){
+  lint TVetor3D::Ycount(lint z = 0, lint x = 0){
     if (this->alocado()){
       if ((this->Zcount() > z) && (this->Xcount() > x)) {
         return itemAsVetor(itemAsVetor(this->vetor, z), x)->count();
@@ -245,9 +241,9 @@ namespace NVetor {
    * O TAMANHO DA MATRIZ **items.
    * NAO NECESSARIAMENTE EXISTEM A MESMA QUANTIDADE DE ELEMENTOS
    *
-   * @return {ulint}
+   * @return {lint}
    */
-  ulint TVetor3D::Zsize(ulint size){
+  lint TVetor3D::Zsize(lint size){
     if (this->alocado()){
       if((size > 0) && (this->vetor->length(size) != size)){
         throw VetException(__func__ , __LINE__ , __FILE__, "Falha ao redimencionar Vetor 3D, exito Z.");
@@ -267,15 +263,15 @@ namespace NVetor {
    * O TAMANHO DA MATRIZ **items.
    * NAO NECESSARIAMENTE EXISTEM A MESMA QUANTIDADE DE ELEMENTOS
    *
-   * @param {ulint}                       z   coordenada z
-   * @return {ulint}
+   * @param {lint}                       z   coordenada z
+   * @return {lint}
    */
-  ulint TVetor3D::Xsize(ulint size){
+  lint TVetor3D::Xsize(lint size){
     if (this->alocado()){
       if (size > 0){
-        ulint zsize = this->vetor->size();
+        lint zsize = this->vetor->size();
 
-        for (ulint i = 0; i < zsize; i++){
+        for (lint i = 0; i < zsize; i++){
           if ((size > 0) && (itemAsVetor(this->vetor, i)->length(size) != size)){
             throw VetException(__func__ , __LINE__ , __FILE__, "Falha ao redimencionar Vetor 3D, exito X.");
           }
@@ -285,7 +281,7 @@ namespace NVetor {
       if (this->Zsize() > 0){
         TVetor *it = itemAsVetor(this->vetor, 0);
 
-        ulint r = it->size();
+        lint r = it->size();
 
         if (r == 0){
 
@@ -305,17 +301,17 @@ namespace NVetor {
    * O TAMANHO DA MATRIZ **items.
    * NAO NECESSARIAMENTE EXISTEM A MESMA QUANTIDADE DE ELEMENTOS
    *
-   * @param {ulint}                       z   coordenada z
-   * @param {ulint}                       x   coordenada x
-   * @return {ulint}
+   * @param {lint}                       z   coordenada z
+   * @param {lint}                       x   coordenada x
+   * @return {lint}
    */
-  ulint TVetor3D::Ysize(ulint size){
+  lint TVetor3D::Ysize(lint size){
     if (this->alocado()){
       if (size > 0){
-        for (ulint i = 0; i < this->vetor->size(); i++){
+        for (lint i = 0; i < this->vetor->size(); i++){
           TVetor *x = itemAsVetor(this->vetor, i);
 
-          for (ulint j = 0; j < x->size(); j++){
+          for (lint j = 0; j < x->size(); j++){
             if (itemAsVetor(x, j)->length(size) <= 0){
               throw VetException(__func__ , __LINE__ , __FILE__, "Falha ao redimencionar item");
             }
@@ -334,17 +330,17 @@ namespace NVetor {
   /*
    * SETA O TAMANHO DO VETOR 3D
    *
-   * @param {ulint}                       z   numero de items no eixo z
-   * @param {ulint}                       x   numero de items no eixo x
-   * @param {ulint}                       y   numero de items no eixo y
+   * @param {lint}                       z   numero de items no eixo z
+   * @param {lint}                       x   numero de items no eixo x
+   * @param {lint}                       y   numero de items no eixo y
    * @return {ulin}                           a quantidade de celulas total
    */
-  ulint TVetor3D::setSize(ulint z, ulint x, ulint y){
+  lint TVetor3D::setSize(lint z, lint x, lint y){
     if ((z > 0) && (x > 0) && (y > 0)){
-      ulint zz = this->Zsize(z);
+      lint zz = this->Zsize(z);
 
       if (zz == z){
-        ulint xx = this->Xsize(x);
+        lint xx = this->Xsize(x);
 
         if (xx == x){
           if (this->Ysize(y) == y){
@@ -360,13 +356,13 @@ namespace NVetor {
   /*
    * OBTEM UM PONTEIRO UMA CELULA
    *
-   * @param {ulint}                       z     coordenada z
-   * @param {ulint}                       x     coordenada x
-   * @param {ulint}                       y     coordenada y
+   * @param {lint}                       z     coordenada z
+   * @param {lint}                       x     coordenada x
+   * @param {lint}                       y     coordenada y
    * @param {void**}                      item  um ponteiro para retornar
    * @return {ulin}                             true se setou o ponteiro corretamente
    */
-  bool TVetor3D::item(ulint z, ulint x, ulint y, void **item){
+  bool TVetor3D::item(lint z, lint x, lint y, void **item){
     if (this->alocado() && (z < this->Zsize()) && (x < this->Xsize()) && (y < this->Ysize()) && (item != NULL)){
       *item = itemAsVetor(itemAsVetor(this->vetor, z), x)->item(y);
       return (*item != NULL);
@@ -378,12 +374,12 @@ namespace NVetor {
   /*
    * RETORNA UM PONTEIRO PARA UMA CELULA
    *
-   * @param {ulint}                       z   coordenada z
-   * @param {ulint}                       x   coordenada x
-   * @param {ulint}                       y   coordenada y
+   * @param {lint}                       z   coordenada z
+   * @param {lint}                       x   coordenada x
+   * @param {lint}                       y   coordenada y
    * @return {void*}
    */
-  void *TVetor3D::item(ulint z, ulint x, ulint y){
+  void *TVetor3D::item(lint z, lint x, lint y){
     void *item = NULL;
 
     if (this->item(z, x, y, &item) && (item != NULL)) {
@@ -396,12 +392,12 @@ namespace NVetor {
   /*
    * RETORNA UM PONTEIRO PARA O INDICE DE UM ITEM
    *
-   * @param {ulint}                       z   coordenada z
-   * @param {ulint}                       x   coordenada x
-   * @param {ulint}                       y   coordenada y
+   * @param {lint}                       z   coordenada z
+   * @param {lint}                       x   coordenada x
+   * @param {lint}                       y   coordenada y
    * @return {void**}
    */
-  void **TVetor3D::itemP(ulint z, ulint x, ulint y){
+  void **TVetor3D::itemP(lint z, lint x, lint y){
     if (this->alocado() && (z < this->Zsize()) && (x < this->Xsize()) && (y < this->Ysize())){
       return itemAsVetor(itemAsVetor(this->vetor, z), x)->itemP(y);
     }
@@ -414,12 +410,12 @@ namespace NVetor {
    * OU SEJA, DEFINE O NOVO VALOR DA CELULA
    * ESTA FUNCAO TENTA LIBERAR EVENTUAL CONTEUDO PREEXISTENTE NA CELULA
    *
-   * @param {ulint}                       z   coordenada z
-   * @param {ulint}                       x   coordenada x
-   * @param {ulint}                       y   coordenada y
+   * @param {lint}                       z   coordenada z
+   * @param {lint}                       x   coordenada x
+   * @param {lint}                       y   coordenada y
    * @return {bool}                           true se sucesso
    */
-  bool TVetor3D::setItem(ulint z, ulint x, ulint y, void *p){
+  bool TVetor3D::setItem(lint z, lint x, lint y, void *p){
     if ((this->alocado()) && (p != NULL) && (z < this->Zsize()) && (x < this->Xsize()) && (y < this->Ysize())){
       return itemAsVetor(itemAsVetor(this->vetor, z), x)->setItem(y, p);
     }
@@ -477,21 +473,23 @@ namespace NVetor {
       *item = (void *)i;
       return true;
     }
+
+		return false;
   }
 
   /*================================================
    * ESPECIALIZACOES - CHAR
    *================================================*/
 
-  bool iteam3DAsChar(TVetor3D *p, ulint z, ulint x, ulint y, char **c){
+  bool iteam3DAsChar(TVetor3D *p, lint z, lint x, lint y, char **c){
     return p->item(z, x, y, (void **)c);
   }
 
-  char *iteam3DAsChar(TVetor3D *p, ulint z, ulint x, ulint y){
+  char *iteam3DAsChar(TVetor3D *p, lint z, lint x, lint y){
     return (char *) p->item(z, x, y);
   }
 
-  bool set3DChar(TVetor3D *p, ulint z, ulint x, ulint y, char c){
+  bool set3DChar(TVetor3D *p, lint z, lint x, lint y, char c){
     char *cc = (char *) malloc(sizeof(char));
 
     if (cc != NULL){
@@ -506,4 +504,3 @@ namespace NVetor {
     return false;
   }
 }
-#endif /* VETOR3D_CPP */

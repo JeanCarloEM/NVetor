@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) [year] [fullname]
+ * Copyright (c) 2017 Jean Carlo de Elias Moreira
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,35 +35,11 @@
  *
  */
 
-#ifndef COMUM_C
-#define COMUM_C
-
-#include "RNG/rng.h"
-#include <stdio.h>
+#include "comum.h"
 #include <string.h>
-#include <iostream>
-
-#if (!defined(__WINDOWS__)) && (defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__TOS_WIN__))
-#define __WINDOWS__
-#elif defined(__GNUC__) || defined(linux)
-#define __LINUX__
-#endif
-
-#if defined(__WINDOWS__)
-  #define DLLEXPORT __declspec(dllexport) __stdcall
-  #define DLLIMPORT __declspec(dllimport) __stdcall
-  #elif defined(__LINUX__)
-  #define DLLEXPORT __attribute__((visibility("default")))
-  #define DLLIMPORT
-#else
-  #define DLLEXPORT
-  #define DLLIMPORT
-#endif
+#include <stdlib.h>
 
 namespace NVetor {
-  typedef unsigned long int ulint;
-  typedef unsigned long int lint;
-
   /*
    * RETORNA UM NUMERO PSEUDO-ALEATORIO
    * UTILIZA AS MELHORES PRATICAS
@@ -80,11 +56,11 @@ namespace NVetor {
    * @param   int
    */
   int sortear(int min, int max) {
-    if ((min < max) && (max > 0)){
+    if ((min < max) && (max > 0)) {
       if (max == min) return max;
       //printf("\nmin = %d\nmax = %d\ndivisor = %d\n\n", min, max, (max - min + 1));    ry{
       return min + (std::abs(aleatorio()) % (max - min + 1));
-    }else{
+    } else {
       return 0;
     }
   }
@@ -97,10 +73,10 @@ namespace NVetor {
    * @param {void**}  d     destino
    */
   void swapP(void **o, void **d) {
-    if ((o != NULL) && (d != NULL) && ((*o != NULL) || (*d != NULL))){
-      void **tmp = (void **) malloc(sizeof(void *));
+    if ((o != NULL) && (d != NULL) && ((*o != NULL) || (*d != NULL))) {
+      void **tmp = (void **) malloc(sizeof (void *));
 
-      if (tmp != NULL){
+      if (tmp != NULL) {
         *tmp = *o;
         *o = *d;
         *d = *tmp;
@@ -112,9 +88,9 @@ namespace NVetor {
   /*
    * IMPLEMENTACAO DE EXCECAO PARA AVISO DE ERROS EM TELA
    */
-  const char* VetException::what() const throw () {
+  const char* VetException::what() const throw() {
     unsigned int size = slen(s) + slen(f) + /*slen(l) +*/ slen(a) + 10;
-    char *text = (char *) malloc(size * sizeof(char));
+    char *text = (char *) malloc(size * sizeof (char));
 
     strcpy(text, "\n\n");
     strcat(text, s);
@@ -131,12 +107,12 @@ namespace NVetor {
 
   /*
    * IMPLEMENTACAO DE EXCECAO PARA AVISO DE ERROS EM TELA
-   */  
-  unsigned int VetException::slen(const char *c) const{
+   */
+  unsigned int VetException::slen(const char *c) const {
     unsigned int r = 0;
 
-    if (c != NULL){
-      while ((c[r] != EOF) && (c[r] != '\n') && (c[r] != '\0')){
+    if (c != NULL) {
+      while ((c[r] != EOF) && (c[r] != '\n') && (c[r] != '\0')) {
         r++;
       }
     }
@@ -144,5 +120,3 @@ namespace NVetor {
     return r;
   }
 };
-
-#endif /* COMUM_C */

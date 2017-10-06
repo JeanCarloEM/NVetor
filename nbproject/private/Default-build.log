@@ -1,2 +1,12 @@
-Makefile:128: nbproject/Makefile-variables.mk: No such file or directory
-make: *** No rule to make target 'nbproject/Makefile-variables.mk'.  Stop.
+[35m[1mScanning dependencies of target runtest[0m
+[ 20%] [32mBuilding CXX object CMakeFiles/runtest.dir/src/Vetor.cpp.obj[0m
+In file included from C:/msys64/mingw64/include/c++/7.1.0/stdlib.h:36:0,
+                 from F:/DOCUMENTOS/FATECE/Box Sync/Privado/lab/NVetor/src/comum.h:44,
+                 from F:/DOCUMENTOS/FATECE/Box Sync/Privado/lab/NVetor/src/Vetor.h:43,
+                 from F:/DOCUMENTOS/FATECE/Box Sync/Privado/lab/NVetor/src/Vetor.cpp:38:
+C:/msys64/mingw64/include/c++/7.1.0/cstdlib:158:11: error: '::vector' has not been declared
+   using ::vector;
+           ^~~~~~
+make[2]: *** [CMakeFiles/runtest.dir/build.make:63: CMakeFiles/runtest.dir/src/Vetor.cpp.obj] Error 1
+make[1]: *** [CMakeFiles/Makefile2:68: CMakeFiles/runtest.dir/all] Error 2
+make: *** [Makefile:84: all] Error 2

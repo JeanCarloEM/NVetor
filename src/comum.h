@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) [year] [fullname]
+ * Copyright (c) 2017 Jean Carlo de Elias Moreira
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,21 +35,66 @@
  *
  */
 
-#include <cstdlib>
-#include "lib/comum.h"
-#include "vetor/Vetor.h"
-#include "vetor/Vetor3D.h"
-#include "testes/performance.cpp"
-#include "testes/funcionamento.cpp"
+#pragma once
 
-/*
- *
- */
-int main(int argc, char** argv) {
-  tVetor1D();
-  teste3D();
-  compare();
+#ifndef COMUM_H
+#define COMUM_H
 
-  return 0;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef _MSC_VER // VISUAL STUDIO
+#endif
+
+#include "RNG/rng.h"
+#include <exception>
+
+/* https://sourceforge.net/p/predef/wiki/OperatingSystems/ */
+#ifdef DLLVETOR
+  #if defined(__WINDOWS__) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__TOS_WIN__)
+    #define DLLEXPORT __declspec(dllexport) __stdcall
+    #define DLLIMPORT __declspec(dllimport) __stdcall
+  #elif defined(__LINUX__)
+    #define DLLEXPORT __attribute__((visibility("default")))
+    #define DLLIMPORT
+#endif
+
+  #ifdef MAKEDLLVETOR
+    #define DLLVETORIMEXPORT DLLEXPORT
+  #else
+    #define DLLVETORIMEXPORT DLLIMPORT
+  #endif
+#else
+  #define DLLVETORIMEXPORT
+#endif
+
+namespace NVetor {
+  typedef long long int lint;
+
+  DLLVETORIMEXPORT int aleatorio();
+  DLLVETORIMEXPORT int sortear(int min, int max);
+  DLLVETORIMEXPORT void swapP(void **o, void **d);
+
+  /*
+   * CLASSE DE EXCECAO USADA PARA PRINTAR ERROS FORMATADOS
+   * NO TERMINAL
+   */
+  struct VetException : public std::exception {
+    const char *s, *f, *a;
+    int l;
+
+    DLLVETORIMEXPORT VetException(const char *ff, int ll, const char *fi, const char *ss)
+    : s(ss), f(ff), l(ll), a(fi) {
+    }
+
+    DLLVETORIMEXPORT ~VetException() throw () {
+    };
+
+    DLLVETORIMEXPORT unsigned int slen(const char *c) const;
+    DLLVETORIMEXPORT const char* what() const throw ();
+  };
 }
 
+
+#endif /* COMUM_H */

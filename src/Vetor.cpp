@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) [year] [fullname]
+ * Copyright (c) 2017 Jean Carlo de Elias Moreira
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,23 +35,19 @@
  *
  */
 
-#ifndef _VETOR_CPP // SE AINDA NAO INCLUIDO (DEINIDO) INCLUA
-#define _VETOR_CPP // DEFINA PARA EVITAR REINCLUSAO
-
 #include "Vetor.h"
 #include <stdlib.h>
-#include "../lib/comum.h"
 
 namespace NVetor {
 
   /* OBTEM UM ITEM, FAZENDO A VERIFICACAO DO TAMANHO/QUANTIDADE
    * OBTEM UM PONTEIRO UMA CELULA
    *
-   * @param {ulint}     index   coordenada z
+   * @param {lint}     index   coordenada z
    * @param {void**}    item    um ponteiro para retornar
    * @return {bool}             true se setou o ponteiro corretamente
    */
-  bool TVetor::item(ulint index, void **item) {
+  bool TVetor::item(lint index, void **item) {
     *item = NULL;
     if (this->alocado() && (index < this->size())) {
       return this->ncitem(index, item);
@@ -63,11 +59,11 @@ namespace NVetor {
   /* OBTEM UM ITEM, SEM FAZER VERIFICACAO DO TAMANHO/QUANTIDADE
    * OBTEM UM PONTEIRO UMA CELULA
    *
-   * @param {ulint}     index   coordenada z
+   * @param {lint}     index   coordenada z
    * @param {void**}            item  um ponteiro para retornar
    * @return {bool}             true se setou o ponteiro corretamente
    */
-  bool TVetor::ncitem(ulint index, void **item) {
+  bool TVetor::ncitem(lint index, void **item) {
     *item = this->items[index];
     return (item != NULL);
   }
@@ -75,10 +71,10 @@ namespace NVetor {
   /* RETORNA UM ITEM, FAZENDO A VERIFICACAO DO TAMANHO/QUANTIDADE
    * RETORNA UM PONTEIRO UMA CELULA
    *
-   * @param {ulint}     index   coordenada z
+   * @param {lint}     index   coordenada z
    * @return {void*}
    */
-  void *TVetor::item(ulint index) {
+  void *TVetor::item(lint index) {
     void *item = NULL;
     if (this->item(index, &item)) {
       return item;
@@ -90,10 +86,10 @@ namespace NVetor {
   /* RETORNA UM ITEM, SEM FAZER VERIFICACAO DO TAMANHO/QUANTIDADE
    * RETORNA UM PONTEIRO UMA CELULA
    *
-   * @param {ulint}     index   coordenada z
+   * @param {lint}     index   coordenada z
    * @return {void*}
    */
-  void *TVetor::ncitem(ulint index) {
+  void *TVetor::ncitem(lint index) {
     void *item = NULL;
     this->ncitem(index, &item);
     return item;
@@ -102,10 +98,10 @@ namespace NVetor {
   /* RETORNA UM PONTEIRO PARA O INDICE DO ITEM, FAZENDO A VERIFICACAO DO TAMANHO/QUANTIDADE
    * RETORNA UM PONTEIRO PARA O INDICE DE UMA CELULA
    *
-   * @param {ulint}     index   coordenada z
+   * @param {lint}     index   coordenada z
    * @return {void*}
    */
-  void **TVetor::itemP(ulint index){
+  void **TVetor::itemP(lint index){
     if (this->alocado() && (index < this->size())) {
       return &this->items[index];
     }
@@ -116,10 +112,10 @@ namespace NVetor {
   /* RETORNA UM PONTEIRO PARA INDICE, SEM FAZER VERIFICACAO DO TAMANHO/QUANTIDADE
    * RETORNA UM PONTEIRO PARA O INDICE DE UMA CELULA
    *
-   * @param {ulint}     index   coordenada z
+   * @param {lint}     index   coordenada z
    * @return {void**}
    */
-  void **TVetor::ncitemP(ulint index){
+  void **TVetor::ncitemP(lint index){
     return &this->items[index];
   }
 
@@ -153,7 +149,7 @@ namespace NVetor {
    */
   bool TVetor::freeAll() {
     if (this->alocado()) {
-      for (int item = this->count()-1; item >= 0; item--){
+      for (lint item = this->count()-1; item >= 0; item--){
         if (!this->freeItem(item)){
           throw VetException(__func__, __LINE__, __FILE__, "Falha ao efetuar a liberao de items.");
           return false;
@@ -178,7 +174,9 @@ namespace NVetor {
    * @param {TCallBackFreeInitVetorItem}  i   Funcao Callback para Iniciar Items
    * @param {void*}                       pai um ponteiro para o pai, geralmennte um vetor
    */
-  TVetor::TVetor(TCallBackFreeInitVetorItem f, TCallBackFreeInitVetorItem i, void *pai = NULL) {
+  TVetor::TVetor(TCallBackFreeInitVetorItem f, TCallBackFreeInitVetorItem i, void *pai = NULL)
+    : items(NULL), pai(NULL), qtd(0), initeds(0), reservedQTD(0)       
+  {
     // DESALOCA A VETOR SE ESTIVER ALOCADA
     this->reset();
 
@@ -191,7 +189,9 @@ namespace NVetor {
   /*
    * CONSTRUTOR DE ITENS VAZIOS
    */
-  TVetor::TVetor() {
+  TVetor::TVetor()
+    : items(NULL), pai(NULL), qtd(0), initeds(0), reservedQTD(0)       
+  {
     // DESALOCA A VETOR SE ESTIVER ALOCADA
     this->reset();
   }
@@ -230,7 +230,7 @@ namespace NVetor {
    * @param {uliunt} i    o numero do indice no vetor do item a ser liberado
    * @return {bool}       true se sucesso
    */
-  bool TVetor::freeItem(ulint i) {
+  bool TVetor::freeItem(lint i) {
     if ((this->alocado()) && (i < this->size()) && (i < this->count())) {
       return this->ncfreeItem(i);
     }
@@ -244,7 +244,7 @@ namespace NVetor {
    * @param {uliunt} i    o numero do indice no vetor do item a ser liberado
    * @return {bool}       true se sucesso
    */
-  bool TVetor::ncfreeItem(ulint i) {
+  bool TVetor::ncfreeItem(lint i) {
     if (this->validFreeCallBack()){
       try {
         bool r = false;
@@ -288,7 +288,7 @@ namespace NVetor {
    * @param {uliunt} i    o numero do indice no vetor do item a ser liberado
    * @return {bool}       true se sucesso
    */
-  bool TVetor::initItem(ulint i) {
+  bool TVetor::initItem(lint i) {
     if ((this->alocado()) && (this->validFreeCallBack()) && (i < this->size()) && (i >= this->count())) {
       try {
           bool r = false;
@@ -323,9 +323,9 @@ namespace NVetor {
    * 50 FORAM INICIALIZADOS(ALOCADOS/CRIADOS)
    * PORTANTO COUNT CONTA OS ELEMENTOS EXISTENTE, NAO O TAMANHO DO VETOR
    *
-   * @return {ulint}
+   * @return {lint}
    */
-  ulint TVetor::count() {
+  inline lint TVetor::count() {
     return this->initeds;
   }
 
@@ -334,9 +334,9 @@ namespace NVetor {
    * O TAMANHO DA MATRIZ **items.
    * NAO NECESSARIAMENTE EXISTEM A MESMA QUANTIDADE DE ELEMENTOS
    *
-   * @return {ulint}
+   * @return {lint}
    */
-  ulint TVetor::size() {
+  inline lint TVetor::size() {
     return this->qtd;
   }
   /*
@@ -344,7 +344,7 @@ namespace NVetor {
    *
    * @return {ulin}
    */
-  ulint TVetor::reservados(){
+  inline lint TVetor::reservados(){
     return this->reservedQTD;
   }
 
@@ -355,7 +355,7 @@ namespace NVetor {
    *
    * @return {bool}       true se sucesso
    */
-  bool TVetor::re_alocar(ulint size, bool forceRealloc) {
+  bool TVetor::re_alocar(lint size, bool forceRealloc) {
     if ((size > 0) && ((size > this->reservados()) ||  ((size < this->reservados()) && (forceRealloc)))) {
       if (((this->items == NULL) && (this->size() > 0)) || ((this->items != NULL) && (this->size() == 0))) {
         throw VetException(__func__ , __LINE__ , __FILE__, "Ponteiro e alocacoes divergentes com a contagem de elementos." );
@@ -402,16 +402,16 @@ namespace NVetor {
    * O TAMANHO DA MATRIZ **items.
    * NAO NECESSARIAMENTE EXISTEM A MESMA QUANTIDADE DE ELEMENTOS
    *
-   * @param {ulint}   size    se zero, apenas retorno a quantidade
-   * @return {ulint}
+   * @param {lint}   size    se zero, apenas retorno a quantidade
+   * @return {lint}
    */
-  ulint TVetor::length(ulint size) {
-    ulint osize = this->size();
+  lint TVetor::length(lint size) {
+    lint osize = this->size();
 
     if ((size > 0) && (size != osize)) {
       // LIBERANDO OS FILHOS PRIMEIRAMENTE
       if (this->alocado() && (size < osize)) {
-        for (ulint i = (osize - 1); i >= size; i--) {
+        for (lint i = (osize - 1); i >= size; i--) {
           this->freeItem(i);
         }
       }
@@ -419,7 +419,7 @@ namespace NVetor {
       // REALOCANDO
       if (this->re_alocar(size)) {
         if ((size > osize) && (this->validInitCallBack())) {
-          for (ulint i = osize; i < size; i++) {
+          for (lint i = osize; i < size; i++) {
             this->items[i] = NULL; // SIGNIFICA NAO INICIALIZADO
             this->initItem(i);
           }
@@ -440,10 +440,10 @@ namespace NVetor {
    * OU SEJA, DEFINE O NOVO VALOR DA CELULA
    * ESTA FUNCAO TENTA LIBERAR EVENTUAL CONTEUDO PREEXISTENTE NA CELULA
    *
-   * @param {ulint}                       index   coordenada z
+   * @param {lint}                       index   coordenada z
    * @return {bool}                               true se sucesso
    */
-  bool TVetor::ncsetItem(ulint index, void *p){
+  bool TVetor::ncsetItem(lint index, void *p){
     if (this->items[index] != NULL){
       this->freeItem(index);
     }
@@ -460,10 +460,10 @@ namespace NVetor {
    * OU SEJA, DEFINE O NOVO VALOR DA CELULA
    * ESTA FUNCAO TENTA LIBERAR EVENTUAL CONTEUDO PREEXISTENTE NA CELULA
    *
-   * @param {ulint}                       index   coordenada z
+   * @param {lint}                       index   coordenada z
    * @return {bool}                               true se sucesso
    */
-  bool TVetor::setItem(ulint index, void *p){
+  bool TVetor::setItem(lint index, void *p){
     if ((p != NULL) && (index < this->size())){
       /* LEMBRANDO QUE count EH O TOTAL, SENDO O PROXIMO A SER SETADO
        * O PROPRIO TOTAL DE count, POR ISSO,
@@ -563,6 +563,7 @@ namespace NVetor {
 
   bool freeItemTVetor(void **item, void *vetor){
     delete (TVetor *)*item;
+		return true;
   }
 
 
@@ -577,7 +578,7 @@ namespace NVetor {
   }
 
 
-  bool setVetorItem(TVetor *p, ulint index, TVetor *v){
+  bool setVetorItem(TVetor *p, lint index, TVetor *v){
     if (v != NULL) {
       return p->setItem(index, (void *)v);
     }
@@ -613,11 +614,11 @@ namespace NVetor {
     return false;
   }
 
-  bool itemAsVetor(TVetor *p, ulint i, TVetor **v) {
+  bool itemAsVetor(TVetor *p, lint i, TVetor **v) {
     return p->item(i, (void **) v);
   }
 
-  TVetor *itemAsVetor(TVetor *p, ulint i) {
+  TVetor *itemAsVetor(TVetor *p, lint i) {
     void *r = p->item(i);
 
     return (r!=NULL) ? ((TVetor *) r): NULL;
@@ -659,7 +660,7 @@ namespace NVetor {
     return false;
   }
 
-  bool setIntItem(TVetor *p, ulint index, int i){
+  bool setIntItem(TVetor *p, lint index, int i){
     void *item = (void *) malloc(sizeof(int));
 
     if (item != NULL) {
@@ -675,11 +676,11 @@ namespace NVetor {
     return false;
   }
 
-  bool iteamAsInt(TVetor *p, ulint i, int **v) {
+  bool iteamAsInt(TVetor *p, lint i, int **v) {
     return p->item(i, (void **)v);
   }
 
-  int *iteamAsInt(TVetor *p, ulint i) {
+  int *iteamAsInt(TVetor *p, lint i) {
     return (int *) p->item(i);
   }
 
@@ -720,7 +721,7 @@ namespace NVetor {
     return false;
   }
 
-  bool setCharItem(TVetor *p, ulint index, char c){
+  bool setCharItem(TVetor *p, lint index, char c){
     void *item = (void *) malloc(sizeof(char));
 
     if (item != NULL) {
@@ -736,11 +737,11 @@ namespace NVetor {
     return false;
   }
 
-  bool iteamAsChar(TVetor *p, ulint i, char **c) {
+  bool iteamAsChar(TVetor *p, lint i, char **c) {
     return p->item(i, (void **)c);
   }
 
-  char *iteamAsChar(TVetor *p, ulint i) {
+  char *iteamAsChar(TVetor *p, lint i) {
     return (char *) p->item(i);
   }
 
@@ -756,4 +757,3 @@ namespace NVetor {
     return p->pop((void **) c);
   }
 }
-#endif /* VETOR_C */

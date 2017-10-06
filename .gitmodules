@@ -1,3 +1,3 @@
 [submodule "lib/RNG"]
-	path = lib/RNG
+	path = src/RNG
 	url = https://github.com/ademakov/RNG
